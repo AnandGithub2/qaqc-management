@@ -1,4 +1,0 @@
-services:
-  - type: web
-    name: qaqc-management
-    env: docker
