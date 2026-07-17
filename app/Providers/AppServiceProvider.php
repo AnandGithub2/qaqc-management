@@ -13,16 +13,12 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
-    public function boot(): void
-    {
-        if (Schema::hasTable('settings')) {
-            View::share(
-                'appSetting',
-                Setting::first()
-            );
-        } else {
-            View::share('appSetting', null);
-        }
+public function boot(): void
+{
+    try {
+        View::share('appSetting', Setting::first());
+    } catch (\Exception $e) {
+        View::share('appSetting', null);
     }
+}
 }
