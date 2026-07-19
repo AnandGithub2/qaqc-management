@@ -1,106 +1,163 @@
 @extends('layouts.app')
 
-
 @section('content')
 
-<h2>
-COA Management
-</h2>
+<div class="container-fluid">
 
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-<div class="card shadow">
+        <div>
+            <h2 class="fw-bold text-danger mb-0">
+                Certificate Of Analysis
+            </h2>
 
-<div class="card-body">
+            <small class="text-muted">
+                All Generated COA Certificates
+            </small>
+        </div>
 
+    </div>
 
-<table class="table table-bordered">
+    <div class="card shadow border-0">
 
+        <div class="card-header bg-danger text-white">
 
-<tr>
+            <h5 class="mb-0">
+                COA List
+            </h5>
 
-<th>COA Number</th>
-<th>Sample</th>
-<th>Company</th>
-<th>Product</th>
-<th>Date</th>
-<th>Status</th>
-<th>Action</th>
+        </div>
 
-</tr>
+        <div class="card-body">
 
+            <div class="table-responsive">
 
-@foreach($coas as $coa)
+                <table class="table table-bordered table-hover align-middle">
 
+                    <thead class="table-danger">
 
-<tr>
+                        <tr>
 
+                            <th>#</th>
+                            <th>COA Number</th>
+                            <th>Company</th>
+                            <th>Product</th>
+                            <th>Sample No.</th>
+                            <th>Batch No.</th>
+                            <th>Issue Date</th>
+                            <th>Status</th>
+                            <th width="170">Action</th>
 
-<td>
-{{ $coa->coa_number }}
-</td>
+                        </tr>
 
+                    </thead>
 
-<td>
-{{ $coa->sample->sample_number }}
-</td>
+                    <tbody>
 
+                    @forelse($coas as $coa)
 
-<td>
-{{ $coa->sample->company->company_name }}
-</td>
+                        <tr>
 
+                            <td>
+                                {{ $loop->iteration }}
+                            </td>
 
-<td>
-{{ $coa->sample->product->product_name }}
-</td>
+                            <td>
+                                <strong class="text-danger">
+                                    {{ $coa->coa_number }}
+                                </strong>
+                            </td>
 
+                            <td>
+                                {{ $coa->sample->company->company_name ?? '-' }}
+                            </td>
 
-<td>
-{{ $coa->issue_date }}
-</td>
+                            <td>
+                                {{ $coa->sample->product->product_name ?? '-' }}
+                            </td>
 
+                            <td>
+                                {{ $coa->sample->sample_number ?? '-' }}
+                            </td>
 
-<td>
+                            <td>
+                                {{ $coa->sample->batch_number ?? '-' }}
+                            </td>
 
-<span class="badge bg-success">
-{{ $coa->status }}
-</span>
+                            <td>
 
-</td>
+                                {{ \Carbon\Carbon::parse($coa->issue_date)->format('d-m-Y') }}
 
+                            </td>
 
-<td>
+                            <td>
 
+                                @if($coa->sample->qa_status=="Approved")
 
-<a href="{{route('coa.generate',$coa->sample_id)}}"
-class="btn btn-primary btn-sm">
+                                    <span class="badge bg-success">
+                                        Approved
+                                    </span>
 
-Download PDF
+                                @elseif($coa->sample->qa_status=="Rejected")
 
-</a>
-<a
-href="{{ route('coa.mail',$sample->id) }}"
-class="btn btn-success">
+                                    <span class="badge bg-danger">
+                                        Rejected
+                                    </span>
 
-Email COA
+                                @else
 
-</a>
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
 
-</td>
+                                @endif
 
+                            </td>
 
-</tr>
+                            <td>
 
+                                <a href="{{ route('coa.generate',$coa->sample->id) }}"
+                                   class="btn btn-danger btn-sm">
 
-@endforeach
+                                    <i class="bi bi-file-earmark-pdf"></i>
 
+                                </a>
 
-</table>
+                                <a href="{{ route('coa.mail',$coa->sample->id) }}"
+                                   class="btn btn-success btn-sm">
 
+                                    <i class="bi bi-envelope"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="9" class="text-center text-muted">
+
+                                No COA Found
+
+                            </td>
+
+                        </tr>
+
+                    @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
-
-</div>
-
 
 @endsection

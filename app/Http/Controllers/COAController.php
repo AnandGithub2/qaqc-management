@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\COAMail;
+use App\Models\Setting;
+
+
+
+
 class COAController extends Controller
 {
 public static function middleware(): array
@@ -81,6 +86,8 @@ public function create($sample_id)
 public function generate(Sample $sample)
 {
 
+    $setting = Setting::first();
+
     $sample->load([
         'company',
         'product',
@@ -116,12 +123,14 @@ public function generate(Sample $sample)
     }
 
 
-
-    $pdf = Pdf::loadView(
-        'coa.pdf',
-        compact('sample')
+$pdf = Pdf::loadView(
+    'coa.pdf',
+    compact(
+        'sample',
+        'setting'
     )
-    ->setPaper('a4');
+)
+->setPaper('a4');
 
 
     return $pdf->download(
@@ -150,12 +159,17 @@ public function index()
 
 public function sendMail(Sample $sample)
 {
-    $sample->load([
-        'company',
-        'product',
-        'sampleTests.testParameter',
-        'coa'
-    ]);
+$sample->load([
+
+    'company',
+    'product',
+    'sampleTests.testParameter',
+    'coa'
+
+]);
+
+
+$setting = Setting::first();
 
     Mail::to($sample->company->email)
         ->send(new COAMail($sample));

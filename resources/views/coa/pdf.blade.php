@@ -49,104 +49,144 @@ th{
 }
 
 .coa-title{
+
     margin-top:15px;
-    background:#0d6efd;
+    background:#dc3545;
     color:#fff;
     text-align:center;
     padding:10px;
     font-size:20px;
     font-weight:bold;
+
 }
 
 .section{
+
     margin-top:18px;
     margin-bottom:8px;
     font-size:15px;
     font-weight:bold;
-    color:#0d6efd;
+    color:#dc3545;
+
 }
 
-.info td{
-    padding:8px;
-}
 
 .pass{
     color:green;
     font-weight:bold;
 }
 
+
 .fail{
     color:red;
     font-weight:bold;
 }
 
+
 .footer{
+
     margin-top:50px;
+
 }
 
+
 .sign{
+
     width:33%;
     text-align:center;
     float:left;
+
 }
 
+
 .note{
+
     margin-top:90px;
     font-size:11px;
     color:#555;
     border-top:1px solid #999;
     padding-top:10px;
+
 }
+
 
 </style>
 
+
 </head>
+
 
 <body>
 
+
 {{-- HEADER --}}
+
 
 <table class="header-table">
 
 <tr>
 
+
 <td width="18%">
 
-@if(isset($appSetting) && $appSetting->company_logo)
+
+@if(isset($setting) && $setting->company_logo)
+
 
 <img
 class="logo"
-src="{{ public_path('storage/'.$appSetting->company_logo) }}">
+src="{{ public_path('storage/'.$setting->company_logo) }}">
+
 
 @endif
 
+
 </td>
+
+
 
 <td align="center">
 
+
 <div class="company-name">
 
-{{ $appSetting->company_name ?? 'QA/QC MANAGEMENT SYSTEM' }}
+{{ $setting->company_name ?? 'QA/QC MANAGEMENT SYSTEM' }}
 
 </div>
+
 
 <div class="company-details">
 
-{{ $appSetting->address ?? '' }}
+
+{{ $setting->address ?? '' }}
 
 <br>
 
-{{ $appSetting->phone ?? '' }}
+
+{{ $setting->phone ?? '' }}
+
 
 |
 
-{{ $appSetting->email ?? '' }}
+{{ $setting->email ?? '' }}
+
+
+<br>
+
+
+GST :
+{{ $setting->gst_number ?? '-' }}
+
 
 </div>
 
+
 </td>
 
+
+
 <td width="20%" align="right">
+
 
 <b>Revision :</b> 01
 
@@ -154,19 +194,29 @@ src="{{ public_path('storage/'.$appSetting->company_logo) }}">
 
 <b>Page :</b> 1 of 1
 
+
 </td>
+
 
 </tr>
 
+
 </table>
+
+
 
 <div class="coa-title">
 
+
 CERTIFICATE OF ANALYSIS (COA)
+
 
 </div>
 
-{{-- COA DETAILS --}}
+
+
+{{-- COA INFORMATION --}}
+
 
 <div class="section">
 
@@ -174,27 +224,52 @@ COA Information
 
 </div>
 
-<table class="info">
+
+<table>
+
 
 <tr>
 
-<th width="20%">COA Number</th>
 
-<td>{{ $sample->coa->coa_number ?? '-' }}</td>
+<th width="20%">
+COA Number
+</th>
 
-<th width="20%">Issue Date</th>
 
 <td>
 
-{{ optional($sample->coa->issue_date)->format('d-m-Y') ?? now()->format('d-m-Y') }}
+{{ $sample->coa->coa_number ?? '-' }}
 
 </td>
 
+
+
+<th width="20%">
+Issue Date
+</th>
+
+
+<td>
+
+
+{{ $sample->coa && $sample->coa->issue_date 
+? \Carbon\Carbon::parse($sample->coa->issue_date)->format('d-m-Y')
+: now()->format('d-m-Y') }}
+
+
+</td>
+
+
 </tr>
+
 
 </table>
 
+
+
+
 {{-- SAMPLE INFORMATION --}}
+
 
 <div class="section">
 
@@ -202,43 +277,80 @@ Sample Information
 
 </div>
 
+
+
 <table>
 
+
 <tr>
 
-<th width="25%">Company</th>
+<th width="25%">
+Company
+</th>
 
-<td>{{ $sample->company->company_name }}</td>
+<td>
+
+{{ $sample->company->company_name ?? '-' }}
+
+</td>
 
 </tr>
 
+
+
 <tr>
 
-<th>Product</th>
+<th>
+Product
+</th>
 
-<td>{{ $sample->product->product_name }}</td>
+<td>
+
+{{ $sample->product->product_name ?? '-' }}
+
+</td>
 
 </tr>
 
+
+
 <tr>
 
-<th>Batch Number</th>
+<th>
+Batch Number
+</th>
 
-<td>{{ $sample->batch_number }}</td>
+<td>
+
+{{ $sample->batch_number }}
+
+</td>
 
 </tr>
 
+
+
 <tr>
 
-<th>Sample Number</th>
+<th>
+Sample Number
+</th>
 
-<td>{{ $sample->sample_number }}</td>
+<td>
+
+{{ $sample->sample_number }}
+
+</td>
 
 </tr>
 
+
+
 <tr>
 
-<th>Sample Date</th>
+<th>
+Sample Date
+</th>
 
 <td>
 
@@ -248,9 +360,15 @@ Sample Information
 
 </tr>
 
+
 </table>
 
+
+
+
 {{-- TEST RESULTS --}}
+
+
 
 <div class="section">
 
@@ -258,67 +376,108 @@ Test Results
 
 </div>
 
+
+
 <table>
+
 
 <tr>
 
-<th width="5%">Sr.</th>
 
-<th width="12%">Code</th>
+<th>
+Sr.
+</th>
 
-<th width="28%">Test Parameter</th>
 
-<th width="18%">Specification</th>
+<th>
+Code
+</th>
 
-<th width="12%">Result</th>
 
-<th width="10%">Unit</th>
+<th>
+Test Parameter
+</th>
 
-<th width="15%">Status</th>
+
+<th>
+Specification
+</th>
+
+
+<th>
+Result
+</th>
+
+
+<th>
+Unit
+</th>
+
+
+<th>
+Status
+</th>
+
 
 </tr>
 
+
+
 @php
 
-$overall='PASS';
+$overall = 'PASS';
 
 @endphp
 
+
+
+
 @foreach($sample->sampleTests as $test)
 
-@if(strtoupper($test->test_status)=='FAIL')
+
+
+@if(strtoupper($test->test_status) == 'FAIL')
 
 @php
+
 $overall='FAIL';
+
 @endphp
 
 @endif
 
+
+
 <tr>
 
-<td align="center">
+
+<td>
 
 {{ $loop->iteration }}
 
 </td>
 
-<td>
-
-{{ $test->testParameter->test_code }}
-
-</td>
 
 <td>
 
-{{ $test->testParameter->test_name }}
+{{ $test->testParameter->test_code ?? '-' }}
 
 </td>
+
 
 <td>
 
-{{ $test->testParameter->specification }}
+{{ $test->testParameter->test_name ?? '-' }}
 
 </td>
+
+
+<td>
+
+{{ $test->testParameter->specification ?? '-' }}
+
+</td>
+
 
 <td>
 
@@ -326,25 +485,38 @@ $overall='FAIL';
 
 </td>
 
+
 <td>
 
-{{ $test->testParameter->unit }}
+{{ $test->testParameter->unit ?? '-' }}
 
 </td>
 
-<td align="center">
+
+<td>
 
 {{ $test->test_status }}
 
 </td>
 
+
 </tr>
+
+
 
 @endforeach
 
+
+
 </table>
 
+
+
+
+
 {{-- FINAL RESULT --}}
+
+
 
 <div class="section">
 
@@ -352,15 +524,25 @@ Final Result
 
 </div>
 
+
+
 <table>
+
 
 <tr>
 
-<th width="30%">Overall Status</th>
+
+<th width="30%">
+Overall Status
+</th>
+
 
 <td>
 
+
+
 @if($overall=="PASS")
+
 
 <span class="pass">
 
@@ -368,7 +550,10 @@ PASS
 
 </span>
 
+
+
 @else
+
 
 <span class="fail">
 
@@ -376,15 +561,24 @@ FAIL
 
 </span>
 
+
 @endif
+
 
 </td>
 
+
 </tr>
+
 
 </table>
 
-{{-- APPROVAL --}}
+
+
+
+
+{{-- APPROVAL DETAILS --}}
+
 
 <div class="section">
 
@@ -392,11 +586,19 @@ Approval Details
 
 </div>
 
+
+
 <table>
+
+
 
 <tr>
 
-<th width="25%">QA Status</th>
+
+<th width="25%">
+QA Status
+</th>
+
 
 <td>
 
@@ -404,11 +606,19 @@ Approval Details
 
 </td>
 
+
 </tr>
+
+
+
 
 <tr>
 
-<th>Prepared By</th>
+
+<th>
+Prepared By
+</th>
+
 
 <td>
 
@@ -416,11 +626,19 @@ Approval Details
 
 </td>
 
+
 </tr>
+
+
+
 
 <tr>
 
-<th>Approved By</th>
+
+<th>
+Approved By
+</th>
+
 
 <td>
 
@@ -428,11 +646,19 @@ Approval Details
 
 </td>
 
+
 </tr>
+
+
+
 
 <tr>
 
-<th>Remarks</th>
+
+<th>
+Remarks
+</th>
+
 
 <td>
 
@@ -440,61 +666,102 @@ Approval Details
 
 </td>
 
+
 </tr>
+
+
 
 </table>
 
-{{-- SIGNATURES --}}
+
+
+
+
+{{-- SIGNATURE --}}
+
+
 
 <div class="footer">
 
+
 <div class="sign">
+
 
 <br><br><br>
 
+
 ____________________
+
 
 <br>
 
 Prepared By
 
+
 </div>
+
+
+
 
 <div class="sign">
 
+
 <br><br><br>
 
+
 ____________________
+
 
 <br>
 
 Reviewed By
 
+
 </div>
+
+
+
 
 <div class="sign">
 
+
 <br><br><br>
 
+
 ____________________
+
 
 <br>
 
 Authorized Signatory
 
-</div>
 
 </div>
+
+
+</div>
+
+
+
 
 <div style="clear:both;"></div>
 
+
+
+
 <div class="note">
 
+
 This Certificate of Analysis is computer generated and does not require a physical signature.
+
 <br>
+
 The above results relate only to the sample tested.
 
+
 </div>
+
+
 
 </body>
 

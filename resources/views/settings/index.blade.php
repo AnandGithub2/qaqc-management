@@ -190,7 +190,53 @@ value="{{ $setting->footer_text ?? '' }}">
 </div>
 
 <div class="col-md-12">
+<div class="col-md-6 mb-3">
 
+    <label>Company Tagline</label>
+
+    <input
+        type="text"
+        name="company_tagline"
+        class="form-control"
+        value="{{ $setting->company_tagline ?? '' }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+    <label>ISO Number</label>
+
+    <input
+        type="text"
+        name="iso_number"
+        class="form-control"
+        value="{{ $setting->iso_number ?? '' }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+    <label>Drug License</label>
+
+    <input
+        type="text"
+        name="drug_license"
+        class="form-control"
+        value="{{ $setting->drug_license ?? '' }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+    <label>License Number</label>
+
+    <input
+        type="text"
+        name="license_no"
+        class="form-control"
+        value="{{ $setting->license_no ?? '' }}">
+
+</div>
 <button
 class="btn btn-success">
 

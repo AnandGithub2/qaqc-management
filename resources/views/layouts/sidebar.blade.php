@@ -24,6 +24,23 @@ Dashboard
 
 </li>
 
+<li>
+
+<a href="{{ route('global.search') }}"
+class="{{ request()->routeIs('global.search') ? 'active' : '' }}">
+
+
+<i class="bi bi-search"></i>
+
+<span>
+Global Search
+</span>
+
+
+</a>
+
+</li>
+
 <li class="nav-item">
 
 <a href="{{ route('companies.index') }}" class="nav-link text-white">

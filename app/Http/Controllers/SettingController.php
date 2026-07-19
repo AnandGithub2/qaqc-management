@@ -40,7 +40,13 @@ class SettingController extends Controller
 
         }
 
+$setting->license_no=$request->license_no;
 
+$setting->iso_number=$request->iso_number;
+
+$setting->drug_license=$request->drug_license;
+
+$setting->company_tagline=$request->company_tagline;
         $setting->company_name = $request->company_name;
         $setting->email = $request->email;
         $setting->phone = $request->phone;

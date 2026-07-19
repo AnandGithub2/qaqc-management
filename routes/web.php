@@ -16,8 +16,7 @@ use App\Http\Controllers\AuditTrailController;
 use App\Http\Controllers\BatchTraceabilityController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
-
-
+use App\Http\Controllers\GlobalSearchController;
 
 Route::get('/', function () {
 
@@ -184,6 +183,11 @@ Route::get('/reports/pdf', [ReportController::class,'pdf'])
     ->name('report.pdf');
 
 
+Route::get(
+'/search',
+[GlobalSearchController::class,'index']
+)
+->name('global.search');
 
 });
 
